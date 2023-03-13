@@ -1,4 +1,5 @@
-SELECT 
+INSERT IGNORE INTO dw_weather.dimtime (date_id, year, quarter, month, day, day_week, day_year, season)
+SELECT DISTINCT
     date_id,
     YEAR(date_id) AS year,
     QUARTER(date_id) AS quarter,
@@ -24,4 +25,6 @@ SELECT
         END
     END AS season
 FROM
-    db_weather.observation;
+    db_weather.observation
+ORDER BY date_id;
+

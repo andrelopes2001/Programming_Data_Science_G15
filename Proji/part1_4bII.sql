@@ -1,5 +1,5 @@
 SELECT 
-	station.id as station_id,
+    station.id AS station_id,
     station.name AS station_name,
     state.alias,
     state.name AS state_name,

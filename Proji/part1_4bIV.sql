@@ -1,9 +1,9 @@
 SELECT 
     observation.date_id AS date,
     observation.station AS station,
-    observation.PRCP as precipitation,
-    observation.TMAX as max_temperature,
-    observation.TMIN as min_temperature,
+    observation.PRCP AS precipitation,
+    observation.TMAX AS max_temperature,
+    observation.TMIN AS min_temperature,
     inventory.element AS element
 FROM
     db_weather.observation AS observation
