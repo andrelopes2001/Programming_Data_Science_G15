@@ -1,6 +1,7 @@
 SELECT 
-    station.id AS station_id,
-    station.name AS station_name,
+    station.id AS id,
+    station.latitude as latitude, 
+    station.name AS name,
     state.alias,
     state.name AS state_name,
     state.population,
@@ -9,11 +10,11 @@ SELECT
     state.water_area,
     state.nr_reps,
     country.fips,
-    country.name,
+    country.name as country_name,
     country.license_plate,
     country.domain,
     continent.cc,
-    continent.name
+    continent.name as continent_name
 FROM
     db_weather.station AS station
         JOIN
