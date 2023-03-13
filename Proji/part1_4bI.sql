@@ -1,4 +1,4 @@
-INSERT IGNORE INTO dw_weather.dimtime (date_id, year, quarter, month, day, day_week, day_year, season)
+INSERT IGNORE INTO dw_weather.dimtime
 SELECT DISTINCT
     date_id,
     YEAR(date_id) AS year,
@@ -27,4 +27,3 @@ SELECT DISTINCT
 FROM
     db_weather.observation
 ORDER BY date_id;
-
