@@ -17,9 +17,7 @@ ORDER BY YEAR(fo.time_id) DESC;
 
 -- 5.II
 SELECT 
-    dt.year year,
-    ds.country_name country,
-    AVG(fo.value) AVG_TMAX
+    ds.country_name country
 FROM
     DimStation ds,
     DimElement de,
@@ -30,12 +28,14 @@ WHERE
         AND de.name = 'TMAX'
         AND de.id = fo.element_id
         AND dt.date_id = fo.time_id
-GROUP BY dt.year , ds.country_name , fo.element_id
-ORDER BY AVG(fo.value) DESC;
+GROUP BY dt.year , ds.country_name
+ORDER BY AVG(fo.value) DESC
+LIMIT 1;
+
 
 -- 5.III
 SELECT 
-    dt.day_week WEEK_DAY, SUM(fo.value) ANNUAL_PRCP
+    dt.day_week WEEK_DAY
 FROM
     DimElement de,
     DimTime dt,
@@ -45,27 +45,33 @@ WHERE
         AND de.id = fo.element_id
         AND dt.date_id = fo.time_id
 GROUP BY dt.day_week
-ORDER BY SUM(fo.value) DESC;
+ORDER BY SUM(fo.value) DESC
+LIMIT 1;
 
 -- 5.IV
 SELECT 
-    ds.continent_name continent,
-    de.name element,
-    COUNT(time_id) number_observations
+    AVG(cont_elem_obs.number_observations)
 FROM
-    DimStation ds,
-    DimElement de,
-    FactObservation fo
-WHERE
-    ds.id = fo.station_id
-        AND de.id = fo.element_id
-GROUP BY ds.continent_name , de.name
-ORDER BY ds.continent_name , de.name;
+    (SELECT 
+        ds.continent_name continent,
+            de.name element,
+            COUNT(time_id) number_observations
+    FROM
+        DimStation ds, DimElement de, FactObservation fo
+    WHERE
+        ds.id = fo.station_id
+            AND de.id = fo.element_id
+    GROUP BY ds.continent_name , de.name
+    ORDER BY ds.continent_name , de.name) AS cont_elem_obs;
 
 -- 5.V
-select value from factobservation fo
-join dimstation ds on fo.station_id = ds.id
-group by ds.country_name;
+SELECT 
+    value
+FROM
+    factobservation fo
+        JOIN
+    dimstation ds ON fo.station_id = ds.id
+GROUP BY ds.country_name;
 
 
 SELECT ds.country_name, month(fo.time_id) AS month
