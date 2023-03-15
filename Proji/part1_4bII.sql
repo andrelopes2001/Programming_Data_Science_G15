@@ -1,4 +1,4 @@
--- INSERT IGNORE INTO dw_weather.dimstation
+INSERT IGNORE INTO dw_weather.dimstation
 SELECT 
 	station.id AS id,
     station.name as name,

@@ -1,11 +1,22 @@
+INSERT IGNORE INTO dw_weather.factobservation
 SELECT 
-    observation.date_id AS date,
-    observation.station AS station,
-    observation.PRCP AS precipitation,
-    observation.TMAX AS max_temperature,
-    observation.TMIN AS min_temperature,
-    inventory.element AS element
+    o.date_id, o.station, de.id, o.PRCP AS value
 FROM
-    db_weather.observation AS observation
-        JOIN
-    db_weather.inventory AS inventory ON observation.station = inventory.station;
+    db_weather.Observation o,
+    dw_weather.dimElement de
+WHERE
+    de.name = 'PRCP' AND o.PRCP IS NOT NULL 
+UNION SELECT 
+    o.date_id, o.station, de.id, o.TMAX AS value
+FROM
+    db_weather.Observation o,
+    dw_weather.dimElement de
+WHERE
+    de.name = 'TMAX' AND o.TMAX IS NOT NULL 
+UNION SELECT 
+    o.date_id, o.station, de.id, o.TMIN AS value
+FROM
+    db_weather.Observation o,
+    dw_weather.dimElement de
+WHERE
+    de.name = 'TMIN' AND o.TMIN IS NOT NULL;
