@@ -66,6 +66,21 @@ FROM
 
 -- 5.V
 SELECT 
+    MONTH(observation.date_id) AS obs_month,
+    AVG(observation.TMAX - observation.TMIN)
+FROM
+    observation,
+    country,
+    station
+WHERE
+    observation.station = station.id
+        AND station.country = 'UK'
+        AND YEAR(observation.date_id) between year(curdate())-10 and year(curdate())-1 
+GROUP BY obs_month
+ORDER BY obs_month;
+
+
+SELECT 
     value
 FROM
     factobservation fo
